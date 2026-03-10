@@ -1,0 +1,17 @@
+---
+# STIG Catalog: Arista MLS EOS 4.x NDM
+# Finding: V-255952 (CAT I - High)
+# Title: The Arista network device must be configured to prohibit the use of
+#        all unnecessary and/or nonsecure functions, ports, protocols, and/or services.
+#
+# Check 1: show management telnet
+#   Finding if Telnet is enabled.
+#
+# Check 2: show management http-server
+#   Finding if "http-commands" appears in Enabled Services (unencrypted HTTP eAPI).
+#
+# Both checks are satisfied by existing ANTA tests - no custom test required.
+
+anta.tests.security:
+  - VerifyTelnetStatus:
+  - VerifyAPIHttpStatus:
