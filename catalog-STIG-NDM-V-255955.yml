@@ -1,0 +1,19 @@
+---
+# STIG Catalog: Arista MLS EOS 4.x NDM
+# Finding: V-255955 (CAT I - High)
+# Title: The Arista network device must use FIPS 140-2 approved algorithms for
+#        authentication to a cryptographic module.
+#
+# Check 1: show management security
+#   Finding if hardware entropy is not enabled.
+#   Covered by existing VerifyHardwareEntropy.
+#
+# Check 2: show management ssh
+#   Finding if FIPS restrictions are not enabled (FIPS status: disabled).
+#   Requires new VerifySSHFIPSRestrictions (no existing test covers this).
+
+anta.tests.security:
+  - VerifyHardwareEntropy:
+
+anta.tests.stig.ndm:
+  - VerifySSHFIPSRestrictions:
