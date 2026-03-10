@@ -150,6 +150,39 @@ Key rules:
 - If a test uses atomic results, `atomic_results` must be specified in full and in order.
 - The `from tests.units.anta_tests import test` import is required for `pytest_generate_tests` to collect the tests.
 
+## Implementing STIG Tests
+
+When asked to implement a STIG finding, follow this priority order:
+
+1. **Use an existing test with catalog inputs** — Check whether an existing test in `anta/tests/` already runs the required EOS command and checks the right condition. If so, add it to the catalog with the appropriate inputs. No code changes needed.
+
+2. **Add a new test to an existing module** — If no existing test covers the requirement, add a new `Verify*` class to the most appropriate existing module (e.g., `security.py`, `system.py`, `interfaces.py`). Tests belong to the feature domain they check, not to the STIG that motivated them. Never mention STIG IDs, CAT levels, or compliance frameworks inside `anta/tests/` code.
+
+3. **Create a new test module** — Only if the feature domain has no existing module (e.g., a genuinely new area).
+
+### STIG Catalog Files
+
+For each STIG finding, produce a catalog file named `catalog-STIG-<BENCHMARK>-<VULN-ID>.yml`, where `<BENCHMARK>` is the abbreviated benchmark name (e.g., `NDM`) and `<VULN-ID>` is the finding ID (e.g., `V-255952`). Example: `catalog-STIG-NDM-V-255952.yml`.
+
+The catalog header must include the STIG reference, title, and a per-check annotation explaining which ANTA test covers each check and why (or why a new test was required):
+
+```yaml
+---
+# STIG Catalog: <Benchmark full name>
+# Finding: <VULN-ID> (<CAT level> - <Severity>)
+# Title: <Full STIG title>
+#
+# Check 1: <EOS command>
+#   <Finding condition>
+#   Covered by existing <TestClass> / Requires new <TestClass> because <reason>.
+#
+# Check N: ...
+
+anta.tests.<module>:
+  - <TestClass>:
+      <inputs if required>
+```
+
 ## Code Style
 
 - Python 3.10+ minimum; use `from __future__ import annotations` at the top of every module.
